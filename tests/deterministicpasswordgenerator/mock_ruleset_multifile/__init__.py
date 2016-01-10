@@ -1,0 +1,1 @@
+from .alternative_more_complicated_strategy import complex_function as generate_password

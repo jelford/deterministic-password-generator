@@ -5,7 +5,7 @@ from os import path
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
-with open(path.join(here, 'README'), encoding='utf-8') as f:
+with open(path.join(here, 'README')) as f:
     long_description = f.read()
 
 setup(
@@ -24,5 +24,12 @@ setup(
     ],
 
     package_dir={'': 'src'},
-    packages=find_packages(where='src')
+    packages=find_packages(where='src'),
+
+    setup_requires=[
+        'pytest-runner',
+    ],
+    tests_require=[
+        'pytest',
+    ],
 )

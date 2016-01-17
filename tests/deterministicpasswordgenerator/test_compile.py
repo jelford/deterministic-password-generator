@@ -1,6 +1,8 @@
 import zipfile
 
+import os
 import pytest
+import stat
 import tempfile
 from os import path
 
@@ -35,6 +37,19 @@ def test_compile_asks_for_password_if_none_given(ruleset_name, mocker, tempdir: 
 
     with pytest.raises(RequestedPasswordInput):
         compile_ruleset(rulset_path(ruleset_name), output_path=tempdir.name)
+
+
+def test_compiled_rulesets_are_readonly(ruleset_name, tempdir: tempfile.TemporaryDirectory):
+    path_to_ruleset = rulset_path(ruleset_name)
+    compile_ruleset(path_to_ruleset, output_path=tempdir.name, ruleset_encryption_password='encryption-key')
+    compiled_path = path.join(tempdir.name, ruleset_name + '.dpgr')
+    stat_result = os.stat(compiled_path)
+    assert stat.S_IRUSR == stat.S_IRUSR & stat_result.st_mode
+    assert stat.S_IWUSR != stat.S_IWUSR & stat_result.st_mode
+    assert stat.S_IRGRP != stat.S_IRGRP & stat_result.st_mode
+    assert stat.S_IWGRP != stat.S_IWGRP & stat_result.st_mode
+    assert stat.S_IWOTH != stat.S_IWOTH & stat_result.st_mode
+    assert stat.S_IROTH != stat.S_IROTH & stat_result.st_mode
 
 
 def rulset_path(ruleset_name: str):

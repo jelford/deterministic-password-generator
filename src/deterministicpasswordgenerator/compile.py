@@ -2,6 +2,7 @@ import zipfile
 from getpass import getpass
 
 import os
+import stat
 import tempfile
 from os import path
 
@@ -23,4 +24,5 @@ def compile_ruleset(ruleset_path, ruleset_encryption_password=None, output_path=
 
     compiled_ruleset_output_path = path.join(output_path, '{ruleset}.dpgr'.format(ruleset=ruleset_name))
     with open(compiled_ruleset_output_path, 'wb') as output:
+        os.chmod(compiled_ruleset_output_path, stat.S_IREAD)
         output.write(encrypted_output)

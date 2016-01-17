@@ -1,6 +1,7 @@
 import zipimport
 
 import os
+import stat
 import tempfile
 
 from .crypto import decrypt
@@ -52,14 +53,17 @@ def load_rule_bank(encryption_key, directory: str = None) -> RuleBank:
 
 
 def install_ruleset(path):
-    import shutil
     rulebank_path = _installed_rulebank_path()
     try:
         os.makedirs(rulebank_path)
     except FileExistsError:
         pass
 
-    shutil.copyfile(path, os.path.join(rulebank_path, os.path.basename(path)))
+    dest = os.path.join(rulebank_path, os.path.basename(path))
+    with open(dest, 'wb') as desfile:
+        os.chmod(dest, stat.S_IREAD)
+        with open(path, 'rb') as srcfile:
+            desfile.write(srcfile.read())
 
 
 def _installed_rulebank_path() -> str:

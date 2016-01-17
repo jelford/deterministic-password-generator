@@ -50,20 +50,54 @@ password as one of your seeds.
 
 ### Your rules
 
+Your rules take the form of a python module. The only requirements are:
+* Your rules are in a folder which can be imported as a valid python module
+* Your rules expose a method: `generate_password` which accepts a list of
+`parts` and returns a generated password
+
 Compile your rules into a `ruleset` by doing:
 ```sh
-~: deterministic-password-generator compile
+~: dpg compile /path/to/your/super_secret_scheme
+~: ls
+super_secret_scheme.dpgr
+```
+
+You will be asked for a password that will be used to encrypt your ruleset
+once it's compiled into a ruleset package.
+
+Once they're compiled, install your rules into your rule repository:
+```sh
+~: dpg install_ruleset super_secret_schema.dpgr
+```
 
 ## Usage
 
 ```sh
-~: deterministic-password-generator <ruleset_name> password parts derived from easy to to remember knowledge
-generated_unique_password
+~: dpg generate_password <ruleset_name> password parts derived from easy to to remember knowledge
 ```
+
+Again, you'll be asked for a password that will decrypt your ruleset.
 
 e.g.
 
 ```sh
-~: deterministic-password-generator super_secret_rules jelford @ github super_secret_password
+~: dpg generate_password super_secret_schema jelford @ github super_secret_password
 hf<jfJfdpane#,f1
+```
+
+## Example
+
+If you check out the source, you can see two basic example rulesets in the
+`tests` folder:
+* `mock_ruleset_simple`
+* `mock_ruleset_multifile`
+
+You can do:
+```sh
+~: dpg compile_ruleset ./tests/mock_ruleset_simple
+Password (used to encrypt compiled ruleset): ...
+~: dpg install_ruleset ./mock_ruleset_simple.dpgr
+~: dpg generate_password jelford @ github.com
+Password (to decrypt ruleset): ...
+> jelford@github.com
 ```

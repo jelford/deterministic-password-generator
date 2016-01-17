@@ -63,5 +63,6 @@ def install_ruleset(path):
 
 
 def _installed_rulebank_path() -> str:
-    return os.environ.get(RULEBANK_PATH, None) or os.path.join(os.environ.get('HOME'),
-                                                               '.deterministicpasswordgenerator', 'rulesets')
+    return os.environ.get(RULEBANK_PATH, None) or \
+           os.path.join(os.environ.get('HOME'), '.local', 'share',
+                        'deterministicpasswordgenerator', 'rulesets')

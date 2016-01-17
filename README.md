@@ -95,7 +95,9 @@ If you check out the source, you can see two basic example rulesets in the
 You can do:
 ```sh
 ~: dpg compile_ruleset ./tests/mock_ruleset_simple
+Password (used to encrypt compiled ruleset): ...
 ~: dpg install_ruleset ./mock_ruleset_simple.dpgr
 ~: dpg generate_password jelford @ github.com
+Password (to decrypt ruleset): ...
 > jelford@github.com
 ```

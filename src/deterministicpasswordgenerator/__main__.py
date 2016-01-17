@@ -37,7 +37,12 @@ def main():
     except KeyError:
         parser.print_usage()
         sys.exit(-1)
-    to_call(**args_to_pass)
+
+    try:
+        to_call(**args_to_pass)
+    except KeyboardInterrupt:
+        print()
+        sys.exit(-1)
 
 
 if __name__ == '__main__':

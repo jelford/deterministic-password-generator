@@ -25,12 +25,22 @@ setup(
 
     package_dir={'': 'src'},
     packages=find_packages(where='src'),
-
+        install_requires=[
+            'cryptography>=1.2.1',
+        ],
     setup_requires=[
         'pytest-runner',
     ],
     tests_require=[
         'pytest',
-        'mock'
+        'pytest-mock',
+        'mock',
     ],
+
+        entry_points={
+            'console_scripts': [
+                'dpg = deterministicpasswordgenerator.__main__:main'
+            ]
+        }
+
 )
